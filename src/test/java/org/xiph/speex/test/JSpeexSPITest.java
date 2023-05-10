@@ -34,101 +34,41 @@
 
 /* $Id$ */
 
-package org.xiph.speex.spi;
+package org.xiph.speex.test;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.xiph.speex.spi.SpeexEncoding;
+import org.xiph.speex.spi.SpeexFileFormatType;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 
+import static org.xiph.speex.test.Utils.assertTrue;
+
 /**
  * JUnit Tests for JSpeex SPI
  *
+ * @author Karstian Lee (tianscar@protonmail.com)
  * @author Marc Gimpel, Wimba S.A. (mgimpel@horizonwimba.com)
  * @version $Revision$
  */
-public class TestJSpeexSPI
-        extends TestCase {
-    /**
-     * Constructor
-     *
-     * @param arg0
-     */
-    public TestJSpeexSPI(String arg0) {
-        super(arg0);
-    }
+public class JSpeexSPITest {
 
-    /**
-     * Command line entrance.
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(TestJSpeexSPI.suite());
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // TestCase classes to override
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     *
-     */
-    protected void setUp() {
-    }
-
-    /**
-     *
-     */
-    protected void tearDown() {
-    }
-
-    /**
-     *
-     */
-//  protected void runTest()
-//  {
-//  }
-
-    /**
-     * Builds the Test Suite.
-     *
-     * @return the Test Suite.
-     */
-    @NotNull
-    public static Test suite() {
-        return new TestSuite(TestJSpeexSPI.class);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Tests
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Test
-     */
-    public void testSuccess() {
-        assertTrue("It failed", true);
-    }
-
-    /**
-     * Test
-     */
+    @Test
+    @DisplayName("Whether Speex File Format supported by JavaSound")
     public void testFileSupport() {
         assertTrue("Speex File Format not supported by JavaSound",
                 AudioSystem.isFileTypeSupported(SpeexFileFormatType.SPEEX));
     }
 
-    /**
-     * Test
-     */
+    @Test
+    @DisplayName("Whether conversion to Speex supported by JavaSound")
     public void testConversionSupport() {
         assertTrue("Conversion to Speex Q0 not supported by JavaSound",
                 AudioSystem.isConversionSupported(SpeexEncoding.SPEEX_Q0,
                         new AudioFormat(8000, 16, 1, true, false)));
+
         assertTrue("Conversion to Speex Q1 not supported by JavaSound",
                 AudioSystem.isConversionSupported(SpeexEncoding.SPEEX_Q1,
                         new AudioFormat(8000, 16, 1, true, false)));
@@ -163,4 +103,5 @@ public class TestJSpeexSPI
                 AudioSystem.isConversionSupported(AudioFormat.Encoding.PCM_SIGNED,
                         new AudioFormat(SpeexEncoding.SPEEX, 8000, -1, 1, -1, -1, false)));
     }
+
 }

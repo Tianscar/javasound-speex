@@ -34,23 +34,26 @@
 
 /* $Id$ */
 
-package org.xiph.speex;
+package org.xiph.speex.test;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.xiph.speex.*;
 
 import java.util.Arrays;
+
+import static org.xiph.speex.test.Utils.assertEquals;
+import static org.xiph.speex.test.Utils.assertTrue;
 
 /**
  * JUnit Tests for JSpeex
  *
+ * @author Karstian Lee (tianscar@protonmail.com)
  * @author Marc Gimpel, Wimba S.A. (mgimpel@horizonwimba.com)
  * @version $Revision$
  */
-public class TestJSpeex
-        extends TestCase {
+public class JSpeexTest {
     public final static byte[] ENCODED_SILENCE_NB_Q01_MONO = {70, -99, 102, 0, 1, -100, -25, 57, -50, 114};
     public final static byte[] ENCODED_SILENCE_NB_Q02_MONO = {22, -99, 102, 0, 0, -18, -18, 7, 119, 112, 59, -69, -127, -35, -36};
     public final static byte[] ENCODED_SILENCE_NB_Q03_MONO = {30, -99, 102, 0, 0, 103, 57, -56, 16, 51, -100, -28, 8, 25, -50, 114, 4, 12, -25, 57};
@@ -113,68 +116,6 @@ public class TestJSpeex
     public final static byte[] ENCODED_SILENCE_UWB_Q10_STEREO = {116, -64, 31, 78, -115, -51, 16, 0, 0, -65, -1, -1, -1, -1, -1, -19, -74, -37, 109, -74, -37, 64, 0, 95, -1, -1, -1, -1, -1, -10, -37, 109, -74, -37, 109, -96, 0, 47, -1, -1, -1, -1, -1, -5, 109, -74, -37, 109, -74, -48, 0, 23, -1, -1, -1, -1, -1, -3, -74, -37, 109, -74, -37, 110, 29, -80, 21, -107, -107, -107, -107, -107, -107, -107, -107, -107, -127, 89, 89, 89, 89, 89, 89, 89, 89, 89, 88, 21, -107, -107, -107, -107, -107, -107, -107, -107, -107, -127, 89, 89, 89, 89, 89, 89, 89, 89, 89, 92, -99, -80, 0, 0, 0};
 
     /**
-     * Constructor
-     *
-     * @param arg0
-     */
-    public TestJSpeex(String arg0) {
-        super(arg0);
-    }
-
-    /**
-     * Command line entrance.
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(TestJSpeex.suite());
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // TestCase classes to override
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     *
-     */
-    protected void setUp() {
-    }
-
-    /**
-     *
-     */
-    protected void tearDown() {
-    }
-
-    /**
-     *
-     */
-//  protected void runTest()
-//  {
-//  }
-
-    /**
-     * Builds the Test Suite.
-     *
-     * @return the Test Suite.
-     */
-    @NotNull
-    public static Test suite() {
-        return new TestSuite(TestJSpeex.class);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Tests
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Test
-     */
-    public void testSuccess() {
-        assertTrue("It failed", true);
-    }
-
-    /**
      * @param source
      * @param bitoffset
      * @param size
@@ -212,6 +153,8 @@ public class TestJSpeex
      * normally the average signal. In the case of identical signals on each
      * channel, this is the same thing. Lets test for Silence.
      */
+    @Test
+    @DisplayName("silence stereo constants")
     public void testSilenceStereoConstants() {
         assertTrue("NB Q=1 Stereo file is wrong",
                 Arrays.equals(shiftArray(ENCODED_SILENCE_NB_Q01_STEREO, 17,
@@ -340,6 +283,8 @@ public class TestJSpeex
      * lower frequencies as WB, then adding some data for the higher frequencies.
      * As such, in the case of silence WB and UWB should have the same beginning.
      */
+    @Test
+    @DisplayName("silence modes constants")
     public void testSilenceModesConstants() {
         assertTrue("UWB mode inconsistent with WB mode for Q=1",
                 Arrays.equals(subArray(ENCODED_SILENCE_UWB_Q01_MONO, 0,
@@ -472,6 +417,8 @@ public class TestJSpeex
      * <p/>
      * 1 packet NB = 160 samples = 20 ms
      */
+    @Test
+    @DisplayName("encode silence NBmono")
     public void testEncodeSilenceNBmono() {
         testEncode(0, 1, 8000, 1, new float[160], ENCODED_SILENCE_NB_Q01_MONO);
         testEncode(0, 2, 8000, 1, new float[160], ENCODED_SILENCE_NB_Q02_MONO);
@@ -490,6 +437,8 @@ public class TestJSpeex
      * <p/>
      * 1 packet WB = 320 samples = 20 ms
      */
+    @Test
+    @DisplayName("encode silence WBmono")
     public void testEncodeSilenceWBmono() {
         testEncode(1, 1, 16000, 1, new float[320], ENCODED_SILENCE_WB_Q01_MONO);
         testEncode(1, 2, 16000, 1, new float[320], ENCODED_SILENCE_WB_Q02_MONO);
@@ -508,6 +457,8 @@ public class TestJSpeex
      * <p/>
      * 1 packet UWB = 640 samples = 20 ms
      */
+    @Test
+    @DisplayName("encode silence UWBmono")
     public void testEncodeSilenceUWBmono() {
         testEncode(2, 1, 32000, 1, new float[640], ENCODED_SILENCE_UWB_Q01_MONO);
         testEncode(2, 2, 32000, 1, new float[640], ENCODED_SILENCE_UWB_Q02_MONO);
@@ -526,6 +477,8 @@ public class TestJSpeex
      * <p/>
      * 1 packet NB = 160 samples = 20 ms
      */
+    @Test
+    @DisplayName("encode silence NBstereo")
     public void testEncodeSilenceNBstereo() {
         testEncode(0, 1, 8000, 2, new float[320], ENCODED_SILENCE_NB_Q01_STEREO);
         testEncode(0, 2, 8000, 2, new float[320], ENCODED_SILENCE_NB_Q02_STEREO);
@@ -544,6 +497,8 @@ public class TestJSpeex
      * <p/>
      * 1 packet WB = 320 samples = 20 ms
      */
+    @Test
+    @DisplayName("encode silence WBstereo")
     public void testEncodeSilenceWBstereo() {
         testEncode(1, 1, 16000, 2, new float[640], ENCODED_SILENCE_WB_Q01_STEREO);
         testEncode(1, 2, 16000, 2, new float[640], ENCODED_SILENCE_WB_Q02_STEREO);
@@ -562,6 +517,8 @@ public class TestJSpeex
      * <p/>
      * 1 packet UWB = 640 samples = 20 ms
      */
+    @Test
+    @DisplayName("encode silence UWBstereo")
     public void testEncodeSilenceUWBstereo() {
         testEncode(2, 1, 32000, 2, new float[1280], ENCODED_SILENCE_UWB_Q01_STEREO);
         testEncode(2, 2, 32000, 2, new float[1280], ENCODED_SILENCE_UWB_Q02_STEREO);
@@ -574,4 +531,5 @@ public class TestJSpeex
         testEncode(2, 9, 32000, 2, new float[1280], ENCODED_SILENCE_UWB_Q09_STEREO);
         testEncode(2, 10, 32000, 2, new float[1280], ENCODED_SILENCE_UWB_Q10_STEREO);
     }
+    
 }

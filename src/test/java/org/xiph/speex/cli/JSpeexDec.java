@@ -1,4 +1,4 @@
-/******************************************************************************
+package org.xiph.speex.cli; /******************************************************************************
  *                                                                            *
  * Copyright (c) 1999-2003 Wimba S.A., All Rights Reserved.                   *
  *                                                                            *
@@ -24,7 +24,7 @@
  *      Wimba S.A. is not liable for any consequence related to the           *
  *      use of the provided software.                                         *
  *                                                                            *
- * Class: JSpeexDec.java                                                      *
+ * Class: org.xiph.speex.cli.JSpeexDec.java                                                      *
  *                                                                            *
  * Author: James LAWRENCE                                                     *
  * Modified by: Marc GIMPEL                                                   *
@@ -119,7 +119,7 @@ public class JSpeexDec {
     /**
      * Print level for messages
      */
-    protected int printlevel = INFO;
+    public int printlevel = INFO;
 
     /**
      * File format for input or output audio file: Raw
@@ -136,11 +136,11 @@ public class JSpeexDec {
     /**
      * Defines File format for input audio file (Raw, Ogg or Wave).
      */
-    protected int srcFormat = FILE_FORMAT_OGG;
+    public int srcFormat = FILE_FORMAT_OGG;
     /**
      * Defines File format for output audio file (Raw or Wave).
      */
-    protected int destFormat = FILE_FORMAT_WAVE;
+    public int destFormat = FILE_FORMAT_WAVE;
 
     /**
      * Random number generator for packet loss simulation.
@@ -155,7 +155,7 @@ public class JSpeexDec {
     /**
      * Defines whether or not the perceptual enhancement is used.
      */
-    protected boolean enhanced = true;
+    public boolean enhanced = true;
     /**
      * If input is raw, defines the decoder mode (0=NB, 1=WB and 2-UWB).
      */
@@ -188,11 +188,11 @@ public class JSpeexDec {
     /**
      * The audio input file
      */
-    protected String srcFile;
+    public String srcFile;
     /**
      * The audio output file
      */
-    protected String destFile;
+    public String destFile;
 
     /**
      * Builds a plain JSpeex Decoder with default values.
@@ -203,7 +203,7 @@ public class JSpeexDec {
     /**
      * Command line entrance:
      * <pre>
-     * Usage: JSpeexDec [options] input_file output_file
+     * Usage: org.xiph.speex.cli.JSpeexDec [options] input_file output_file
      * </pre>
      *
      * @param args Command line parameters.
@@ -330,7 +330,7 @@ public class JSpeexDec {
      */
     public static void usage() {
         version();
-        System.out.println("Usage: JSpeexDec [options] input_file output_file");
+        System.out.println("Usage: org.xiph.speex.cli.JSpeexDec [options] input_file output_file");
         System.out.println("Where:");
         System.out.println("  input_file can be:");
         System.out.println("    filename.spx  an Ogg Speex file");

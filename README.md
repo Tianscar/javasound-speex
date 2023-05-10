@@ -1,36 +1,30 @@
-Building
---------
-If you have apache maven installed, there is a pom.xml file in the root
-directory.
+# Java Implementation of Speex
+This is a fork of [JSpeex](https://github.com/SourceUtils/jspeex), removed dependencies.
 
-Using with JavaSound
-----------------------
-place the dist/jspeex.jar in your classpath and JavaSound will automatically
-have access to the codecs, to read, write and convert the Speex (.spx) files.
-It has been tested and works with the jlGui Java Music Player.
+This library is a Java port of the Speex speech codec (Open Source/Free Software patent-free audio compression format designed for speech). It provides both the decoder and the encoder in pure Java, as well as a JavaSound SPI. The current version of this library is based on the code from Speex 1.0.5.
 
-Running on the Command line
----------------------------
-encoder help: java -cp dist/jspeex.jar JSpeexEnc -h
-or: java -jar dist/jspeex.jar -h
-decoder help: java -cp dist/jspeex.jar JSpeexDec -h
-ex:
-encoding a wav file: java -cp dist/jspeex.jar JSpeexEnc input.wav output.spx
-decoding any speex file: java -cp dist/jspeex.jar JSpeexDec input.spx output.wav
+## Add the library to your project (gradle)
+1. Add the Maven Central repository (if not exist) to your build file:
+```groovy
+repositories {
+    ...
+    mavenCentral()
+}
+```
 
-Credits
--------
-First of all I'd like to thank Jean-Marc Valin for giving us all this fantastic
-codec. This code is really just a porting of Jean-Marc's code from C to Java.
-I'd also like to thank James Lawrence, who wrote the original Java Speex
-Decoder, from which this encoder was build.
-Finally I'd like to thank all the people who have submitted patches since the
-project has started:
-Dan Rollo <drollo at ets.org>
-William Shubert <wms at igoweb.org>
-George Arnhold <armhold at cs.rutgers.edu>
-Mark Brown <markbrown at iseinc.biz>
+2. Add the dependency:
+```groovy
+dependencies {
+    ...
+    implementation 'com.tianscar.javasound:javasound-speex:0.9.8'
+}
+```
 
-Marc Gimpel <mgimpel at horizonwimba.com>
-Director of Research
-Horizon Wimba
+## Usage
+[Tests and Examples](/src/test/java/org/xiph/speex/test)  
+[Command-line interfaces](/src/test/java/org/xiph/speex/cli)
+
+Note you need to download test audios [here](https://github.com/Tianscar/fbodemo1) and put them to /src/test/java/resources to run the test code properly!
+
+## License
+[BSD 3-Clause](/LICENSE)

@@ -34,7 +34,7 @@
 
 /* $Id$ */
 
-package org.xiph.speex;
+package org.xiph.speex.test;
 
 import org.jetbrains.annotations.NotNull;
 

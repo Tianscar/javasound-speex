@@ -1,4 +1,4 @@
-/******************************************************************************
+package org.xiph.speex.cli; /******************************************************************************
  *                                                                            *
  * Copyright (c) 1999-2003 Wimba S.A., All Rights Reserved.                   *
  *                                                                            *
@@ -24,7 +24,7 @@
  *      Wimba S.A. is not liable for any consequence related to the           *
  *      use of the provided software.                                         *
  *                                                                            *
- * Class: JSpeexEnc.java                                                      *
+ * Class: org.xiph.speex.cli.JSpeexEnc.java                                                      *
  *                                                                            *
  * Author: Marc GIMPEL                                                        *
  * Based on code by: Jean-Marc VALIN                                          *
@@ -107,7 +107,7 @@ public class JSpeexEnc {
     /**
      * Print level for messages
      */
-    protected int printlevel = INFO;
+    public int printlevel = INFO;
 
     /**
      * File format for input or output audio file: Raw
@@ -124,65 +124,65 @@ public class JSpeexEnc {
     /**
      * Defines File format for input audio file (Raw, Ogg or Wave).
      */
-    protected int srcFormat = FILE_FORMAT_OGG;
+    public int srcFormat = FILE_FORMAT_OGG;
     /**
      * Defines File format for output audio file (Raw or Wave).
      */
-    protected int destFormat = FILE_FORMAT_WAVE;
+    public int destFormat = FILE_FORMAT_WAVE;
 
     /**
      * Defines the encoder mode (0=NB, 1=WB and 2=UWB).
      */
-    protected int mode = -1;
+    public int mode = -1;
     /**
      * Defines the encoder quality setting (integer from 0 to 10).
      */
-    protected int quality = 8;
+    public int quality = 8;
     /**
      * Defines the encoders algorithmic complexity.
      */
-    protected int complexity = 3;
+    public int complexity = 3;
     /**
      * Defines the number of frames per speex packet.
      */
-    protected int nframes = 1;
+    public int nframes = 1;
     /**
      * Defines the desired bitrate for the encoded audio.
      */
-    protected final int bitrate = -1;
+    public final int bitrate = -1;
     /**
      * Defines the sampling rate of the audio input.
      */
-    protected int sampleRate = -1;
+    public int sampleRate = -1;
     /**
      * Defines the number of channels of the audio input (1=mono, 2=stereo).
      */
-    protected int channels = 1;
+    public int channels = 1;
     /**
      * Defines the encoder VBR quality setting (float from 0 to 10).
      */
-    protected float vbr_quality = -1;
+    public float vbr_quality = -1;
     /**
      * Defines whether or not to use VBR (Variable Bit Rate).
      */
-    protected boolean vbr = false;
+    public boolean vbr = false;
     /**
      * Defines whether or not to use VAD (Voice Activity Detection).
      */
-    protected boolean vad = false;
+    public boolean vad = false;
     /**
      * Defines whether or not to use DTX (Discontinuous Transmission).
      */
-    protected boolean dtx = false;
+    public boolean dtx = false;
 
     /**
      * The audio input file
      */
-    protected String srcFile;
+    public String srcFile;
     /**
      * The audio output file
      */
-    protected String destFile;
+    public String destFile;
 
     /**
      * Builds a plain JSpeex Encoder with default values.
@@ -193,7 +193,7 @@ public class JSpeexEnc {
     /**
      * Command line entrance:
      * <pre>
-     * Usage: JSpeexEnc [options] input_file output_file
+     * Usage: org.xiph.speex.cli.JSpeexEnc [options] input_file output_file
      * </pre>
      *
      * @param args Command line parameters.
@@ -313,7 +313,7 @@ public class JSpeexEnc {
     public static void usage() {
         version();
         System.out.println("");
-        System.out.println("Usage: JSpeexEnc [options] input_file output_file");
+        System.out.println("Usage: org.xiph.speex.cli.JSpeexEnc [options] input_file output_file");
         System.out.println("Where:");
         System.out.println("  input_file can be:");
         System.out.println("    filename.wav  a PCM wav file");
