@@ -1,5 +1,5 @@
 # Java Implementation of Speex
-This is a fork of [JSpeex](https://github.com/SourceUtils/jspeex), removed dependencies.
+This is a fork of [JSpeex](https://github.com/SourceUtils/jspeex).
 
 This library is a Java port of the Speex speech codec (Open Source/Free Software patent-free audio compression format designed for speech). It provides both the decoder and the encoder in pure Java, as well as a JavaSound SPI. The current version of this library is based on the code from Speex 1.0.5.
 
