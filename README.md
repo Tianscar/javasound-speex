@@ -24,7 +24,7 @@ dependencies {
 [Tests and Examples](/src/test/java/org/xiph/speex/test)  
 [Command-line interfaces](/src/test/java/org/xiph/speex/cli)
 
-Note you need to download test audios [here](https://github.com/Tianscar/fbodemo1) and put them to /src/test/java/resources to run the test code properly!
+Note you need to download test audios [here](https://github.com/Tianscar/fbodemo1) and put them to /src/test/resources to run the test code properly!
 
 ## License
 [BSD 3-Clause](/LICENSE)
