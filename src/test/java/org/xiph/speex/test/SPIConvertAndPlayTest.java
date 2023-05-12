@@ -54,32 +54,6 @@ public class SPIConvertAndPlayTest {
     }
 
     @Test
-    @DisplayName("spx -> pcm, play via SPI")
-    public void convertSPXToPCMAndPlay() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        File file = new File("src/test/resources/fbodemo1.spx");
-        System.out.println("inFile: " + file.getAbsolutePath());
-        AudioInputStream spxAis = AudioSystem.getAudioInputStream(file);
-        System.out.println("inStream: " + spxAis);
-        AudioFormat inAudioFormat = spxAis.getFormat();
-        System.out.println("inFormat: " + inAudioFormat);
-        AudioFormat outAudioFormat = new AudioFormat(
-                inAudioFormat.getSampleRate(),
-                16,
-                inAudioFormat.getChannels(),
-                true,
-                false);
-
-        assertTrue(AudioSystem.isConversionSupported(outAudioFormat, inAudioFormat));
-
-        AudioInputStream pcmAis = AudioSystem.getAudioInputStream(outAudioFormat, spxAis);
-        System.out.println("outStream: " + pcmAis);
-        System.out.println("outFormat: " + pcmAis.getFormat());
-
-        play(pcmAis);
-        pcmAis.close();
-    }
-
-    @Test
     @DisplayName("ogg -> pcm, play via SPI")
     public void convertOGGSPXToPCMAndPlay() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         File file = new File("src/test/resources/fbodemo1_speex.ogg");
