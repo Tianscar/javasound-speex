@@ -36,6 +36,9 @@
 
 package org.xiph.speex.spi;
 
+import org.gagravarr.ogg.OggFile;
+import org.gagravarr.ogg.audio.OggAudioStatistics;
+import org.gagravarr.speex.SpeexFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.xiph.speex.OggCrc;
@@ -44,6 +47,12 @@ import javax.sound.sampled.*;
 import javax.sound.sampled.spi.AudioFileReader;
 import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.nio.file.StandardOpenOption.READ;
 
 /**
  * Provider for Speex audio file reading services.
@@ -88,7 +97,7 @@ public class SpeexAudioFileReader
             throws UnsupportedAudioFileException, IOException {
         @Nullable InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(file);
+            inputStream = Files.newInputStream(file.toPath(), READ);
             return getAudioFileFormat(inputStream, (int) file.length());
         } finally {
             inputStream.close();
@@ -109,9 +118,10 @@ public class SpeexAudioFileReader
     @NotNull
     public AudioFileFormat getAudioFileFormat(@NotNull final URL url)
             throws UnsupportedAudioFileException, IOException {
-        InputStream inputStream = url.openStream();
+        URLConnection connection = url.openConnection();
+        InputStream inputStream = connection.getInputStream();
         try {
-            return getAudioFileFormat(inputStream);
+            return getAudioFileFormat(inputStream, connection.getContentLength());
         } finally {
             inputStream.close();
         }
@@ -131,6 +141,7 @@ public class SpeexAudioFileReader
     @NotNull
     public AudioFileFormat getAudioFileFormat(@NotNull final InputStream stream)
             throws UnsupportedAudioFileException, IOException {
+        if (!stream.markSupported()) throw new IOException("mark/reset not supported");
         return getAudioFileFormat(stream, AudioSystem.NOT_SPECIFIED);
     }
 
@@ -150,7 +161,7 @@ public class SpeexAudioFileReader
     protected AudioFileFormat getAudioFileFormat(@NotNull final InputStream stream,
                                                  final int medialength)
             throws UnsupportedAudioFileException, IOException {
-        return getAudioFileFormat(stream, null, medialength);
+        return getAudioFileFormat(stream, null, medialength, true);
     }
 
     /**
@@ -159,6 +170,7 @@ public class SpeexAudioFileReader
      * @param bitStream
      * @param baos
      * @param mediaLength
+     * @param readDuration
      * @return an AudioInputStream object based on the audio file data contained
      * in the input stream.
      * @throws UnsupportedAudioFileException if the File does not point to
@@ -168,7 +180,8 @@ public class SpeexAudioFileReader
     @NotNull
     protected AudioFileFormat getAudioFileFormat(@NotNull final InputStream bitStream,
                                                  @Nullable ByteArrayOutputStream baos,
-                                                 final int mediaLength)
+                                                 final int mediaLength,
+                                                 final boolean readDuration)
             throws UnsupportedAudioFileException, IOException {
         AudioFormat format;
         try {
@@ -249,25 +262,29 @@ public class SpeexAudioFileReader
                 frameRate = ((float) sampleRate) /
                         ((mode == 0 ? 160f : (mode == 1 ? 320f : 640f)) * ((float) nframes));
             }
+            Map<String, Object> formatProperties = new HashMap<>();
+            formatProperties.put("vbr", vbr);
             format = new AudioFormat(SpeexEncoding.SPEEX, (float) sampleRate,
                     AudioSystem.NOT_SPECIFIED, channels, frameSize,
-                    frameRate, false);
-        } catch (UnsupportedAudioFileException e) {
+                    frameRate, false, formatProperties);
+        } catch (UnsupportedAudioFileException | IOException e) {
             // reset the stream for other providers
             if (bitStream.markSupported()) {
                 bitStream.reset();
             }
             // just rethrow this exception
             throw e;
-        } catch (IOException ioe) {
-            // reset the stream for other providers
-            if (bitStream.markSupported()) {
-                bitStream.reset();
-            }
-            throw new UnsupportedAudioFileException(ioe.getMessage());
+        }
+        Map<String, Object> fileProperties = new HashMap<>();
+        if (readDuration) {
+            InputStream fullStream = new SequenceInputStream(new ByteArrayInputStream(baos.toByteArray()), bitStream);
+            SpeexFile speexFile = new SpeexFile(new OggFile(fullStream));
+            OggAudioStatistics statistics = new OggAudioStatistics(speexFile, speexFile);
+            statistics.calculate();
+            fileProperties.put("duration", (long) (statistics.getDurationSeconds() * 1_000_000L));
         }
         return new AudioFileFormat(SpeexFileFormatType.SPEEX, format,
-                AudioSystem.NOT_SPECIFIED);
+                AudioSystem.NOT_SPECIFIED, fileProperties);
     }
 
     /**
@@ -284,13 +301,10 @@ public class SpeexAudioFileReader
     @NotNull
     public AudioInputStream getAudioInputStream(@NotNull final File file)
             throws UnsupportedAudioFileException, IOException {
-        @NotNull InputStream inputStream = new FileInputStream(file);
+        @NotNull InputStream inputStream = Files.newInputStream(file.toPath(), READ);
         try {
             return getAudioInputStream(inputStream, (int) file.length());
-        } catch (UnsupportedAudioFileException e) {
-            inputStream.close();
-            throw e;
-        } catch (IOException e) {
+        } catch (UnsupportedAudioFileException | IOException e) {
             inputStream.close();
             throw e;
         }
@@ -310,13 +324,11 @@ public class SpeexAudioFileReader
     @NotNull
     public AudioInputStream getAudioInputStream(@NotNull final URL url)
             throws UnsupportedAudioFileException, IOException {
-        InputStream inputStream = url.openStream();
+        URLConnection connection = url.openConnection();
+        InputStream inputStream = connection.getInputStream();
         try {
-            return getAudioInputStream(inputStream);
-        } catch (UnsupportedAudioFileException e) {
-            inputStream.close();
-            throw e;
-        } catch (IOException e) {
+            return getAudioInputStream(inputStream, connection.getContentLength());
+        } catch (UnsupportedAudioFileException | IOException e) {
             inputStream.close();
             throw e;
         }
@@ -337,6 +349,7 @@ public class SpeexAudioFileReader
     @NotNull
     public AudioInputStream getAudioInputStream(@NotNull final InputStream stream)
             throws UnsupportedAudioFileException, IOException {
+        if (!stream.markSupported()) throw new IOException("mark/reset not supported");
         return getAudioInputStream(stream, AudioSystem.NOT_SPECIFIED);
     }
 
@@ -360,7 +373,7 @@ public class SpeexAudioFileReader
         @NotNull ByteArrayOutputStream baos = new ByteArrayOutputStream(128);
         @NotNull AudioFileFormat audioFileFormat = getAudioFileFormat(inputStream,
                 baos,
-                medialength);
+                medialength, false);
         @NotNull ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
         @NotNull SequenceInputStream sequenceInputStream = new SequenceInputStream(bais, inputStream);
         return new AudioInputStream(sequenceInputStream,

@@ -42,8 +42,8 @@ public class SPIConvertAndPlayTest {
         System.out.println("inStream: " + wavAis);
         AudioFormat inAudioFormat = wavAis.getFormat();
         System.out.println("inFormat: " + inAudioFormat);
-        AudioInputStream spxAis = AudioSystem.getAudioInputStream(SpeexEncoding.SPEEX_Q5, wavAis);
-        File outFile = new File("test.spx");
+        AudioInputStream spxAis = AudioSystem.getAudioInputStream(SpeexEncoding.SPEEX_Q10, wavAis);
+        File outFile = new File("fbodemo1_speex.ogg");
         if (!outFile.exists()) Assertions.assertTrue(outFile.createNewFile());
         System.out.println("outFile: " + outFile.getAbsolutePath());
         System.out.println("inStream: " + spxAis);

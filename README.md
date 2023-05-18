@@ -27,4 +27,10 @@ dependencies {
 Note you need to download test audios [here](https://github.com/Tianscar/fbodemo1) and put them to /src/test/resources to run the test code properly!
 
 ## License
-[BSD 3-Clause](/LICENSE)
+[Xiph.Org Variant of the BSD License](/LICENSE)
+
+### Dependencies
+| Library                                                                      | License    | Comptime | Runtime |
+|------------------------------------------------------------------------------|------------|----------|---------|
+| [Jetbrains Java Annotations](https://github.com/JetBrains/java-annotations)  | Apache-2.0 | Yes      | No      |
+| [VorbisJava](https://github.com/Gagravarr/VorbisJava)                        | Apache-2.0 | Yes      | Yes     |

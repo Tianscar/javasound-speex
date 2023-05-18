@@ -29,6 +29,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.jetbrains:annotations:24.0.1'
+    implementation 'org.gagravarr:vorbis-java-core:0.8'
 
     testCompileOnly 'org.jetbrains:annotations:24.0.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
@@ -57,8 +58,8 @@ publishing {
                 url = 'https://github.com/Tianscar/javasound-speex'
                 licenses {
                     license {
-                        name = 'BSD 3-Clause \"New\" or \"Revised\" License'
-                        url = 'http://opensource.org/licenses/BSD-3-Clause'
+                        name = 'Xiph.Org Variant of the BSD License'
+                        url = 'https://www.xiph.org/licenses/bsd/'
                     }
                 }
                 developers {
