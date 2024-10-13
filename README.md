@@ -1,3 +1,5 @@
+WARNING: THIS PROJECT IS NO LONGER MAINTAINED. MOVED TO: https://github.com/jseproject/jse-spi
+
 # Java Implementation of Speex
 This is a fork of [JSpeex](https://github.com/SourceUtils/jspeex).
 
